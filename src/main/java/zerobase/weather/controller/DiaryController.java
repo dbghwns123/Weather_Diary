@@ -7,6 +7,7 @@ import zerobase.weather.domain.Diary;
 import zerobase.weather.service.DiaryService;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -43,5 +44,11 @@ public class DiaryController {
     void updateDiary(@RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                      @RequestBody String text) {
         diaryService.updateDiary(date, text);
+    }
+
+    // 날씨 일기 삭제
+    @DeleteMapping("/delete/diary")
+    void deleteDiary(@RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        diaryService.deleteDiary(date);
     }
 }
