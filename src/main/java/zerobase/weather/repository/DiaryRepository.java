@@ -12,4 +12,7 @@ public interface DiaryRepository extends JpaRepository<Diary, Integer> {
     List<Diary> findAllByDate(LocalDate date);
 
     List<Diary> findAllByDateBetween(LocalDate startDate, LocalDate endDate);
+
+    // 해당 날짜의 첫 번째 일기
+    Diary getFirstByDate(LocalDate date);
 }

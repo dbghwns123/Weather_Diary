@@ -37,4 +37,11 @@ public class DiaryController {
                             @RequestParam(name = "endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         return diaryService.readDiaries(startDate, endDate);
     }
+
+    // 날씨 일기 수정
+    @PutMapping("/update/diary")
+    void updateDiary(@RequestParam(name = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                     @RequestBody String text) {
+        diaryService.updateDiary(date, text);
+    }
 }
