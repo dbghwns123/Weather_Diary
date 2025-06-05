@@ -55,8 +55,10 @@ public class DiaryService {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void createDiary(LocalDate date, String text) {
         // 캐싱 적용으로 기존 방법은 주석처리
+
         // open weather map 에서 날씨 데이터 가져오기
         // String weatherData = getWeatherString();
+
         // 받아온 날씨 json 파싱하기
         // Map<String, Object> parsedWeather = parseWeather(weatherData);
 
@@ -104,6 +106,7 @@ public class DiaryService {
         }
     }
 
+    // 일기 조회
     @Transactional(readOnly = true)
     public List<Diary> readDiary(LocalDate date) {
         if (date.isAfter(LocalDate.ofYearDay(3050, 1))) {
@@ -113,16 +116,19 @@ public class DiaryService {
         return diaryRepository.findAllByDate(date);
     }
 
+    // 일기 범위 조회
     public List<Diary> readDiaries(LocalDate startDate, LocalDate endDate) {
         return diaryRepository.findAllByDateBetween(startDate, endDate);
     }
 
+    // 일기 업데이트
     public void updateDiary(LocalDate date, String text) {
         Diary nowDiary = diaryRepository.getFirstByDate(date);
         nowDiary.setText(text);
         diaryRepository.save(nowDiary);
     }
 
+    // 일기 삭제
     public void deleteDiary(LocalDate date) {
         diaryRepository.deleteAllByDate(date);
     }
@@ -132,7 +138,7 @@ public class DiaryService {
         String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=seoul&appid=" + apiKey;
 
         try {
-            // String 형식의 apiUrl을 URL 형식으로 만들어줌
+            // String 형식의 apiUrl을 URL 형식으로 만들어줌 -> 이 부분에서 예외가 발생할 가능성(try-catch)
             URL url = new URL(apiUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -159,6 +165,7 @@ public class DiaryService {
         }
     }
 
+    // getWeatherString에서 가져온 날씨 정보를 json 형식으로 파싱
     private Map<String, Object> parseWeather(String jsonString) {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject;
